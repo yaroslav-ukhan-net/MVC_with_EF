@@ -1,26 +1,32 @@
-﻿using LibGit2Sharp;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using System;
 using Models.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.EF
 {
-     public class UniversityContext : DbContext 
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
+
+    public class UniversityContext : DbContext
     {
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<HomeTask> HomeTasks { get; set; }
-        public DbSet<HomeTaskAssessment> HomeTaskAssessment { get; set; }
+        private readonly IOptions<RepositoryOptions> _options;
+
+        public UniversityContext(IOptions<RepositoryOptions> options)
+        {
+            _options = options;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G7US54D\SQLEXPRESS;Initial Catalog=University;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(_options.Value.DefaultConnectionString);
+            optionsBuilder.UseLazyLoadingProxies();
         }
+
+        public DbSet<Student> Students { get; set; }
+
+        public DbSet<Course> Courses { get; set; }
+
+        public DbSet<HomeTask> HomeTasks { get; set; }
+
     }
 }

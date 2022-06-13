@@ -20,7 +20,7 @@ namespace WebApi.Dto
 
         public int CourseId { get; set; }
 
-        public virtual List<HomeTaskAssessmentDto> HomeTaskAssessments { get; set; } = new List<HomeTaskAssessmentDto>();
+        //public virtual List<HomeTaskAssessmentDto> HomeTaskAssessments { get; set; } = new List<HomeTaskAssessmentDto>();
 
         public HomeTask ToModel()
         {
@@ -32,14 +32,14 @@ namespace WebApi.Dto
                 Description = Description,
                 Number = Number,
                 CourseId = CourseId,
-                HomeTaskAssessments = HomeTaskAssessments.Select(p => new HomeTaskAssessment
-                {
-                    Date = p.Date,
-                    HomeTaskId = p.HomeTaskId,
-                    Id = p.Id,
-                    IsComplete = p.IsComplete,
-                    StudentId = p.StudentId
-                }).ToList()
+                //HomeTaskAssessments = HomeTaskAssessments.Select(p => new HomeTaskAssessment
+                //{
+                //    Date = p.Date,
+                //    HomeTaskId = p.HomeTaskId,
+                //    Id = p.Id,
+                //    IsComplete = p.IsComplete,
+                //    StudentId = p.StudentId
+                //}).ToList()
             };
         }
 
@@ -53,14 +53,14 @@ namespace WebApi.Dto
                 Description = homeTask.Description,
                 Number = homeTask.Number,
                 CourseId = homeTask.CourseId,
-                HomeTaskAssessments = homeTask.HomeTaskAssessments.Select(p => new HomeTaskAssessmentDto()
-                {
-                    Id = p.Id,
-                    Date = p.Date,
-                    StudentId = p.StudentId,
-                    IsComplete = p.IsComplete,
-                    HomeTaskId = p.HomeTaskId
-                }).ToList()
+                //HomeTaskAssessments = homeTask.HomeTaskAssessments.Select(p => new HomeTaskAssessmentDto()
+                //{
+                //    Id = p.Id,
+                //    Date = p.Date,
+                //    StudentId = p.StudentId,
+                //    IsComplete = p.IsComplete,
+                //    HomeTaskId = p.HomeTaskId
+                //}).ToList()
             };
         }
     }

@@ -1,28 +1,57 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Models;
 
 namespace DataAccess.EF
 {
-    public class UniversityRepository
-    {
-        //in this class add options
-        internal readonly string connectinString;
+    using System.Collections.Generic;
+    using System.Linq;
 
-        public UniversityRepository(string connectinString)
+    using Microsoft.EntityFrameworkCore;
+
+    public class UniversityRepository<T> : IRepository<T> where T : class
+    {
+        private readonly UniversityContext _context;
+        protected DbSet<T> DbSet;
+
+        public UniversityRepository(UniversityContext context)
         {
-            this.connectinString = connectinString;
+            _context = context;
+            context.Database.EnsureCreated();
+            DbSet = _context.Set<T>();
         }
-        internal SqlConnection GetConnection()
+
+        public List<T> GetAll()
         {
-            var connection = new SqlConnection(connectinString);
-            connection.Open();
-            return connection;
+            return DbSet.ToList();
+        }
+
+        public T GetById(int id)
+        {
+            return DbSet.Find(id);
+        }
+
+        public T Create(T entity)
+        {
+            var result = DbSet.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public void Update(T entity)
+        {
+            DbSet.Update(entity);
+            _context.SaveChanges();
+        }
+
+        public void Remove(T entity)
+        {
+            DbSet.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        public void Remove(int id)
+        {
+            var entity = GetById(id);
+            Remove(entity);
         }
     }
 }

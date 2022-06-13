@@ -11,14 +11,16 @@ namespace WebApi.Controllers
     public class CourseController : Controller
     {
         private readonly CourseService _courseService;
+        private readonly StudentService _studentService;
 
-        public CourseController(CourseService courseService)
+        public CourseController(CourseService courseService, StudentService studentService)
         {
             _courseService = courseService;
+            _studentService = studentService;
         }
         // GET: Course/Courses
         [HttpGet]
-        public ViewResult Courses()
+        public IActionResult Courses()
         {
             IEnumerable<CourseDto> model = _courseService.GetAllCourses()
                 .Select(course => CourseDto.FromModel(course));
@@ -88,6 +90,42 @@ namespace WebApi.Controllers
             }
 
             _courseService.CreateCourse(courseDto.ToModel());
+            return RedirectToAction("Courses");
+        }
+
+        [HttpGet]
+        public IActionResult AssignStudents(int id)
+        {
+            var allstudents = _studentService.GetAllStudents();
+            var course = _courseService.GetCourseById(id);
+            if(course == null)
+            {
+                return BadRequest();
+            }
+
+            Student_Course_Assignmed model = new Student_Course_Assignmed();
+
+            model.Id = id;
+            model.Name = course.Name;
+            model.PassCredits = course.PassCredits;
+            model.StartDate = course.StartDate;
+            model.EndDate = course.EndDate;
+            model.Students = new List<AssignmedStudent_Viewmodel>();
+
+            foreach(var student in allstudents)
+            {
+                bool isAssigned = course.Students.Any(p => p.Id == student.Id);
+                model.Students.Add(new AssignmedStudent_Viewmodel() { StudentId = student.Id, StudentName = student.Name, IsAssigned = isAssigned });
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AssignStudent(Student_Course_Assignmed _Assignmed)
+        {
+            _courseService.SetStudentsToCourse(_Assignmed.Id, _Assignmed.Students.Where(p => p.IsAssigned).Select(stud => stud.StudentId));
+
             return RedirectToAction("Courses");
         }
     }

@@ -23,20 +23,22 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = (@"Data Source=DESKTOP-G7US54D\SQLEXPRESS;Initial Catalog=University;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            //var connectionString = (@"Data Source=DESKTOP-G7US54D\SQLEXPRESS;Initial Catalog=University;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
             //my service 
             //services.AddScoped<IRepository<HomeTaskAssessment>>(p => new HomeTaskAssessmentRepository(connectionString));
             //services.AddScoped<IRepository<Student>>(p => new StudentRepository(connectionString));
             //services.AddScoped<IRepository<Course>>(p => new CourseRepository(connectionString));
             //services.AddScoped<IRepository<HomeTask>>(p => new HomeTaskRepository(connectionString));
-            services.AddScoped<IRepository<Student>>(p => new RepositoryOptions<Student>(connectionString,new UniversityContext()));
-            services.AddScoped<IRepository<Course>>(p => new RepositoryOptions<Course>(connectionString, new UniversityContext()));
-            services.AddScoped<IRepository<HomeTask>>(p => new RepositoryOptions<HomeTask>(connectionString, new UniversityContext()));
-            services.AddScoped<IRepository<HomeTaskAssessment>>(p => new RepositoryOptions<HomeTaskAssessment>(connectionString, new UniversityContext()));
+
+            services.Configure<RepositoryOptions>(Configuration);
+            services.AddDbContext<UniversityContext>();
+            
             services.AddScoped<StudentService>();
             services.AddScoped<HomeTaskService>();
             services.AddScoped<CourseService>();
+
+            services.Add(ServiceDescriptor.Scoped(typeof(IRepository<>), typeof(UniversityRepository<>)));
 
             services.AddControllersWithViews();
         }
@@ -51,6 +53,8 @@ namespace WebApi
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -8,16 +8,16 @@
         <thead>
             <tr>
                 <th>
-                    Name
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    Start Date
+                    @Html.DisplayNameFor(model => model.StartDate)
                 </th>
                 <th>
-                    End Date
+                    @Html.DisplayNameFor(model => model.EndDate)
                 </th>
                 <th>
-                    pass credit
+                    @Html.DisplayNameFor(model => model.PassCredits)
                 </th>
                 <th>
                     home task count
@@ -27,27 +27,28 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <th>
-                        @item.Name
-                    </th>
-                    <th>
-                        @item.StartDate
-                    </th>
-                    <th>
-                        @item.EndDate
-                    </th>
-                    <th>
-                        @item.PassCredits
-                    </th>
-                    <th>
-                        @item.HomeTasks.Count
-                    </th>
-                    <th>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>|
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
-                    </th>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassCredits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeTasks.Count)
+                </td>
+                <td>
+                    @Html.ActionLink("Assign Students", "AssignStudents", new { id = item.Id }) |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>|
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

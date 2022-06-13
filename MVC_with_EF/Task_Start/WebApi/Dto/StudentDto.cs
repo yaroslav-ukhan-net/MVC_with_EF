@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Models.Models;
 
@@ -10,7 +11,7 @@ namespace WebApi.Dto
         public string Name { get; set; }
 
         public int Id { get; set; }
-
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -21,9 +22,9 @@ namespace WebApi.Dto
 
         public string Notes { get; set; }
 
-        public virtual List<HomeTaskAssessmentDto> HomeTaskAssessments { get; set; } = new List<HomeTaskAssessmentDto>();
+        //public virtual List<HomeTaskAssessmentDto> HomeTaskAssessments { get; set; } = new List<HomeTaskAssessmentDto>();
 
-        public virtual List<CourseDto> Courses { get; set; } = new List<CourseDto>();
+        //public virtual List<CourseDto> Courses { get; set; } = new List<CourseDto>();
 
         public Student ToModel()
         {
@@ -36,22 +37,22 @@ namespace WebApi.Dto
                 Notes = Notes,
                 Email = Email,
                 GitHubLink = GitHubLink,
-                Courses = Courses.Select(p => new Course
-                {
-                    Id = p.Id,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    Name = p.Name,
-                    PassCredits = p.PassCredits
-                }).ToList(),
-                HomeTaskAssessments = HomeTaskAssessments.Select(p => new HomeTaskAssessment()
-                {
-                    Id = p.Id,
-                    HomeTaskId = p.HomeTaskId,
-                    StudentId = p.StudentId,
-                    Date = p.Date,
-                    IsComplete = p.IsComplete
-                }).ToList()
+                //Courses = Courses.Select(p => new Course
+                //{
+                //    Id = p.Id,
+                //    StartDate = p.StartDate,
+                //    EndDate = p.EndDate,
+                //    Name = p.Name,
+                //    PassCredits = p.PassCredits
+                //}).ToList(),
+                //HomeTaskAssessments = HomeTaskAssessments.Select(p => new HomeTaskAssessment()
+                //{
+                //    Id = p.Id,
+                //    HomeTaskId = p.HomeTaskId,
+                //    StudentId = p.StudentId,
+                //    Date = p.Date,
+                //    IsComplete = p.IsComplete
+                //}).ToList()
             };
         }
 
@@ -66,22 +67,22 @@ namespace WebApi.Dto
                 PhoneNumber = student.PhoneNumber,
                 Notes = student.Notes,
                 Name = student.Name,
-                Courses = student.Courses.Select(p=>new CourseDto()
-                {
-                    Id = p.Id,
-                    StartDate = p.StartDate,
-                    PassCredits = p.PassCredits,
-                    EndDate = p.EndDate,
-                    Name = p.Name
-                }).ToList(),
-                HomeTaskAssessments = student.HomeTaskAssessments.Select(p=>new HomeTaskAssessmentDto()
-                {
-                    Date = p.Date,
-                    Id = p.Id,
-                    StudentId = p.StudentId,
-                    IsComplete = p.IsComplete,
-                    HomeTaskId = p.HomeTaskId
-                }).ToList()
+                //Courses = student.Courses.Select(p=>new CourseDto()
+                //{
+                //    Id = p.Id,
+                //    StartDate = p.StartDate,
+                //    PassCredits = p.PassCredits,
+                //    EndDate = p.EndDate,
+                //    Name = p.Name
+                //}).ToList(),
+                //HomeTaskAssessments = student.HomeTaskAssessments.Select(p=>new HomeTaskAssessmentDto()
+                //{
+                //    Date = p.Date,
+                //    Id = p.Id,
+                //    StudentId = p.StudentId,
+                //    IsComplete = p.IsComplete,
+                //    HomeTaskId = p.HomeTaskId
+                //}).ToList()
             };
         }
     }

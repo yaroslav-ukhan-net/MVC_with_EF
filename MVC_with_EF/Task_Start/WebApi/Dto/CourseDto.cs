@@ -9,7 +9,6 @@ namespace WebApi.Dto
     public class CourseDto
     {
         [Required(AllowEmptyStrings = false)]
-        [MinLength(2)]
         public string Name { get; set; }
 
         public int Id { get; set; }
@@ -21,7 +20,7 @@ namespace WebApi.Dto
         [Range(1,100)]
         public int PassCredits { get; set; }
 
-        public virtual List<StudentDto> Students { get; set; } = new List<StudentDto>();
+        //public virtual List<StudentDto> Students { get; set; } = new List<StudentDto>();
 
         public virtual List<HomeTaskDto> HomeTasks { get; set; } = new List<HomeTaskDto>();
 
@@ -34,16 +33,16 @@ namespace WebApi.Dto
                 StartDate = StartDate,
                 EndDate = EndDate,
                 PassCredits = PassCredits,
-                Students = Students.Select(p => new Student()
-                {
-                    Id = p.Id,
-                    BirthDate = p.BirthDate,
-                    Email = p.Email,
-                    GitHubLink = p.GitHubLink,
-                    Name = p.Name,
-                    PhoneNumber = p.PhoneNumber,
-                    Notes = p.Notes
-                }).ToList(),
+                //Students = Students.Select(p => new Student()
+                //{
+                //    Id = p.Id,
+                //    BirthDate = p.BirthDate,
+                //    Email = p.Email,
+                //    GitHubLink = p.GitHubLink,
+                //    Name = p.Name,
+                //    PhoneNumber = p.PhoneNumber,
+                //    Notes = p.Notes
+                //}).ToList(),
                 HomeTasks = HomeTasks.Select(p => new HomeTask()
                 {
                     Date = p.Date,
